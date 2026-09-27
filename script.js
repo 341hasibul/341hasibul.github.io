@@ -1,7 +1,24 @@
+// Preloader - Hide it immediately with error handling
+window.addEventListener('DOMContentLoaded', function() {
+  let loader = document.getElementById('loader');
+  if (loader) {
+    loader.style.display = 'none';
+  }
+  document.body.style.overflow = 'auto';
+});
+
+// Fallback: hide loader after 2 seconds if page doesn't load
+setTimeout(function() {
+  let loader = document.getElementById('loader');
+  if (loader) {
+    loader.style.display = 'none';
+  }
+  document.body.style.overflow = 'auto';
+}, 2000);
+
 // Sticky Navigation Menu JS Code
 let nav = document.querySelector("nav");
 let scrollBtn = document.querySelector(".scroll-button a");
-let val;
 
 window.onscroll = function() {
   if (document.documentElement.scrollTop > 20) {
@@ -35,7 +52,7 @@ cancelBtn.onclick = function() {
   scrollBtn.style.pointerEvents = "auto";
 };
 
-// Close the mobile menu when a navigation link is clicked.
+// Close the mobile menu when a navigation link is clicked
 let navLinks = document.querySelectorAll(".menu li a");
 for (let i = 0; i < navLinks.length; i++) {
   navLinks[i].addEventListener("click", function() {
@@ -47,29 +64,27 @@ for (let i = 0; i < navLinks.length; i++) {
   });
 }
 
-// Preloader
-let loader = document.getElementById("loader");
-function myloader() {
-  loader.style.display = "none";
+// Typing effect - with error handling for Typed.js
+if (typeof Typed !== 'undefined') {
+  try {
+    new Typed('.type', {
+      strings: [
+        'Python Developer',
+        'Problems Solver',
+        'Machine Learning Enthusiast',
+        'Artificial Intelligence Explorer',
+        'AI Research Enthusiast'
+      ],
+      typeSpeed: 150,
+      backSpeed: 150,
+      loop: true
+    });
+  } catch (e) {
+    console.error('Typed.js error:', e);
+  }
+} else {
+  console.warn('Typed.js library not loaded');
 }
 
-// Typing effect
-let typed = new Typed(".type", {
-  strings: [
-    "Python Developer",
-    "Problems Solver",
-    "Machine Learning Enthusiast",
-    "Artificial Intelligence Explorer",
-    "AI Research Enthusiast"
-  ],
-  typeSpeed: 150,
-  backSpeed: 150,
-  loop: true
-});
-
-// The old refresh-button handler referenced a missing #btn element and stopped
-// the rest of the page script with a null-reference error. There is no refresh
-// button on this page, so no handler is needed.
-
-// Keep the page scrollable so sections such as Contact can be reached.
+// Keep the page scrollable
 body.style.overflow = "auto";
