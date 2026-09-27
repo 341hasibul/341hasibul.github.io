@@ -1,90 +1,77 @@
-// Preloader - Hide it immediately with error handling
-window.addEventListener('DOMContentLoaded', function() {
-  let loader = document.getElementById('loader');
-  if (loader) {
-    loader.style.display = 'none';
-  }
-  document.body.style.overflow = 'auto';
-});
+// Prevent script crashes from missing elements
+const nav = document.querySelector("nav");
+const scrollBtn = document.querySelector(".scroll-button a");
+const body = document.querySelector("body");
+const navBar = document.querySelector(".navbar");
+const menuBtn = document.querySelector(".menu-btn");
+const cancelBtn = document.querySelector(".cancel-btn");
 
-// Fallback: hide loader after 2 seconds if page doesn't load
-setTimeout(function() {
-  let loader = document.getElementById('loader');
-  if (loader) {
-    loader.style.display = 'none';
-  }
-  document.body.style.overflow = 'auto';
-}, 2000);
+function myloader() {
+  const loader = document.getElementById("loader");
+  if (loader) loader.style.display = "none";
+  if (body) body.style.overflow = "auto";
+}
 
-// Sticky Navigation Menu JS Code
-let nav = document.querySelector("nav");
-let scrollBtn = document.querySelector(".scroll-button a");
+window.addEventListener("DOMContentLoaded", myloader);
+window.addEventListener("load", myloader);
 
-window.onscroll = function() {
-  if (document.documentElement.scrollTop > 20) {
-    nav.classList.add("sticky");
-    scrollBtn.style.display = "block";
-  } else {
-    nav.classList.remove("sticky");
-    scrollBtn.style.display = "none";
-  }
-};
+if (nav && scrollBtn) {
+  window.onscroll = function() {
+    if (document.documentElement.scrollTop > 20) {
+      nav.classList.add("sticky");
+      scrollBtn.style.display = "block";
+    } else {
+      nav.classList.remove("sticky");
+      scrollBtn.style.display = "none";
+    }
+  };
+}
 
-// Side Navigation Menu JS Code
-let body = document.querySelector("body");
-let navBar = document.querySelector(".navbar");
-let menuBtn = document.querySelector(".menu-btn");
-let cancelBtn = document.querySelector(".cancel-btn");
+if (menuBtn && navBar && body && cancelBtn) {
+  menuBtn.onclick = function() {
+    navBar.classList.add("active");
+    menuBtn.style.opacity = "0";
+    menuBtn.style.pointerEvents = "none";
+    body.style.overflow = "hidden";
+    if (scrollBtn) scrollBtn.style.pointerEvents = "none";
+  };
 
-menuBtn.onclick = function() {
-  navBar.classList.add("active");
-  menuBtn.style.opacity = "0";
-  menuBtn.style.pointerEvents = "none";
-  body.style.overflow = "hidden";
-  scrollBtn.style.pointerEvents = "none";
-};
-
-cancelBtn.onclick = function() {
-  navBar.classList.remove("active");
-  menuBtn.style.opacity = "1";
-  menuBtn.style.pointerEvents = "auto";
-  body.style.overflow = "auto";
-  scrollBtn.style.pointerEvents = "auto";
-};
-
-// Close the mobile menu when a navigation link is clicked
-let navLinks = document.querySelectorAll(".menu li a");
-for (let i = 0; i < navLinks.length; i++) {
-  navLinks[i].addEventListener("click", function() {
+  cancelBtn.onclick = function() {
     navBar.classList.remove("active");
     menuBtn.style.opacity = "1";
     menuBtn.style.pointerEvents = "auto";
     body.style.overflow = "auto";
-    scrollBtn.style.pointerEvents = "auto";
+    if (scrollBtn) scrollBtn.style.pointerEvents = "auto";
+  };
+}
+
+const navLinks = document.querySelectorAll(".menu li a");
+navLinks.forEach((link) => {
+  link.addEventListener("click", function() {
+    if (navBar) navBar.classList.remove("active");
+    if (menuBtn) {
+      menuBtn.style.opacity = "1";
+      menuBtn.style.pointerEvents = "auto";
+    }
+    if (body) body.style.overflow = "auto";
+    if (scrollBtn) scrollBtn.style.pointerEvents = "auto";
+  });
+});
+
+if (typeof Typed !== "undefined") {
+  new Typed(".type", {
+    strings: [
+      "Python Developer",
+      "Problems Solver",
+      "Machine Learning Enthusiast",
+      "Artificial Intelligence Explorer",
+      "AI Research Enthusiast"
+    ],
+    typeSpeed: 150,
+    backSpeed: 150,
+    loop: true
   });
 }
 
-// Typing effect - with error handling for Typed.js
-if (typeof Typed !== 'undefined') {
-  try {
-    new Typed('.type', {
-      strings: [
-        'Python Developer',
-        'Problems Solver',
-        'Machine Learning Enthusiast',
-        'Artificial Intelligence Explorer',
-        'AI Research Enthusiast'
-      ],
-      typeSpeed: 150,
-      backSpeed: 150,
-      loop: true
-    });
-  } catch (e) {
-    console.error('Typed.js error:', e);
-  }
-} else {
-  console.warn('Typed.js library not loaded');
-}
-
-// Keep the page scrollable
-body.style.overflow = "auto";
+// Remove old broken code blocks that referenced missing elements
+// and attempted to append to a non-existent #image element.
